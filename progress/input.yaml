@@ -1,7 +1,7 @@
 # ProGRESS Configuration File
 
 # Data file directory
-data: "path/to/Data/"
+data: "./progress/Data"
 
 # Inputs for the API
 api_key: "yourapikey"
@@ -15,10 +15,10 @@ year_end_w: 2014
 
 # Inputs for Solar
 year_start_s: 1998    
-year_end_s: 2020
+year_end_s: 1998
 
 # Monte Carlo simulation parameters
-samples: 1
-sim_hours: 8760
-load_factor: 1
-model: 'Copper Sheet' # 'Zonal' or 'Copper Sheet'
+samples: 2
+sim_hours: 100
+load_factor: 1.3
+model: 'Zonal' # 'Zonal' or 'Copper Sheet'
