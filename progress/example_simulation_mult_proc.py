@@ -26,7 +26,7 @@ class ProgressMultiProcess:
         self.rank = self.comm.Get_rank()
         self.size = self.comm.Get_size()
 
-    def MCS(self, input_file, main_folder, optimization_period = "single_period", time_periods = 24) :   
+    def MCS(self, input_file, main_folder) :   
         '''This function performs mixed time sequential MCS using methods from the different RA modules'''
 
         # open configuration file
@@ -42,7 +42,11 @@ class ProgressMultiProcess:
         # Monte Carlo simulation parameters
         samples = config['samples']
         sim_hours = config['sim_hours']
-        
+        time_periods = config['optimization_period']
+        if time_periods == 1:
+            optimization_period = "single_period"
+        else:
+            optimization_period = "multi_period"
         # system data
         data_gen = system_directory + '/gen.csv'
         data_branch = system_directory + '/branch.csv'
@@ -296,8 +300,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", help="Path to YAML configuration file. Default: ./progress/input.yaml")
     parser.add_argument("--out", help="Optional: output directory. If not provided, a new Results_<timestamp> folder will be created.")
-    parser.add_argument("--optimization_period", default="multi_period")
-    parser.add_argument("--time_periods", type=int, default=24)
     args = parser.parse_args()
 
     # --- Determine input YAML ---
@@ -326,7 +328,7 @@ if __name__ == "__main__":
 
     # run MCS
     rank, SOC_rec, curt_rec, renewable_rec, bus_name, essname, main_folder, sim_hours, \
-          mLOLP_rec, COV_rec, samples, size = pmp.MCS(config_file, results_subdir, optimization_period="multi_period", time_periods=24)
+          mLOLP_rec, COV_rec, samples, size = pmp.MCS(config_file, results_subdir)
     
     if rank == 0:
         # plot results

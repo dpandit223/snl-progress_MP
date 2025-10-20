@@ -22,3 +22,5 @@ samples: 2
 sim_hours: 100
 load_factor: 1.3
 model: 'Zonal' # 'Zonal' or 'Copper Sheet'
+
+optimization_period: 24 #Set to 1 for single period optimization. Recommended: 24 hours.

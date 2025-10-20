@@ -15,7 +15,7 @@ from mod_plot import RAPlotTools
 from mod_kmeans import KMeans_Pipeline
 from datetime import datetime
 
-def MCS(input_file, results_subdir, optimization_period = "single_period", time_periods = 24) :   
+def MCS(input_file, results_subdir) :   
     '''This function performs mixed time sequential MCS using methods from the different RA modules'''
  
     # open configuration file
@@ -31,6 +31,11 @@ def MCS(input_file, results_subdir, optimization_period = "single_period", time_
     # Monte Carlo simulation parameters
     samples = config['samples']
     sim_hours = config['sim_hours']
+    time_periods = config['optimization_period']
+    if time_periods == 1:
+        optimization_period = "single_period"
+    else:
+        optimization_period = "multi_period"
 
     # system data
     data_gen = system_directory + '/gen.csv'
@@ -310,7 +315,7 @@ if __name__ == "__main__":
         
     # run MCS
     indices, SOC_rec, curt_rec, renewable_rec, bus_name, essname, sim_hours, \
-        samples, mLOLP_rec, COV_rec = MCS('./progress/input.yaml', results_subdir, optimization_period="multi_period", time_periods=24)
+        samples, mLOLP_rec, COV_rec = MCS('./progress/input.yaml', results_subdir)
     
     # plot indices for all samples after MCS is complete
     rapt = RAPlotTools(results_subdir)
