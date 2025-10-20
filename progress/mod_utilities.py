@@ -352,9 +352,10 @@ class RAUtilities:
         # gen = np.array(list(model.Pg.get_values().values()))
 
         SOC_old = np.array(list(model.SOC.get_values().values()))
+        P_dis = np.array(list(model.Pg.get_values().values()))[ng::]
+        P_ch = np.array(list(model.Pc.get_values().values()))
+        return(load_curt, SOC_old, P_dis, P_ch)
 
-        return(load_curt, SOC_old)
-    
     def OptDispatchMP(self, ng, nz, nl, ness, fb_ess, fb_soc, fb_ren, BMva, fb_Pg, fb_flow, A_inc, gen_mat, curt_mat, ch_mat, \
                     gencost, net_load, SOC_old, ess_pmax, ess_eff, disch_cost, ch_cost, time_period, copper_sheet = False):
        
@@ -434,10 +435,15 @@ class RAUtilities:
                 current_curtail += model.curt[z, t].value
             load_curt[t] = current_curtail
         soc_profile = np.zeros((ness, len(T)))
+        p_discharge = np.zeros((ness, len(T)))
+        p_charge = np.zeros((ness, len(T)))
         for i in range(ness):
             for t in T:
                 soc_profile[i, t] = model.SOC[i, t].value
-        return load_curt, soc_profile
+                p_discharge[i, t] = model.Pg[ng + i, t].value
+                p_charge[i, t] = model.Pc[i, t].value
+
+        return load_curt, soc_profile, p_discharge, p_charge
 
     def OptDispatchLite(self, ng, nz, ness, fb_ess, fb_soc, BMva, fb_Pg, A_inc, \
                     gencost, net_load, SOC_old, ess_pmax, ess_eff, disch_cost, ch_cost):
@@ -515,8 +521,9 @@ class RAUtilities:
         load_curt = sum(np.array(list(model.curt.get_values().values())))
 
         SOC_old = np.array(list(model.SOC.get_values().values()))
-
-        return(load_curt, SOC_old)
+        P_dis = np.array(list(model.Pg.get_values().values()))[ng::]
+        P_ch = np.array(list(model.Pc.get_values().values()))
+        return(load_curt, SOC_old, P_dis, P_ch)
 
     def TrackLOLStates(self, load_curt, BMva, var_s, LOL_track, s, n):
         """

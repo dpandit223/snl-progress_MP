@@ -18,9 +18,12 @@ year_start_s: 1998
 year_end_s: 1998
 
 # Monte Carlo simulation parameters
-samples: 2
-sim_hours: 100
+samples: 1
+sim_hours: 8760
 load_factor: 1.3
 model: 'Zonal' # 'Zonal' or 'Copper Sheet'
 
 optimization_period: 24 #Set to 1 for single period optimization. Recommended: 24 hours.
+evaluate_degradation: True #Set to True to include BESS degradation in the model.
+degradation_interval: 168 #How often degradation is evaluated in hours. Recommended: 168 hours (1 week) or more .
+detailed_thermal_model: False #Set to True to use detailed PyBAMM thermal model for BESS degradation calculations. Will increase computation time.
