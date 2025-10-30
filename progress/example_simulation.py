@@ -377,7 +377,7 @@ if __name__ == "__main__":
         
     # run MCS
     indices, SOC_rec, curt_rec, renewable_rec, bus_name, essname, sim_hours, \
-        samples, mLOLP_rec, COV_rec = MCS('./progress/input.yaml', results_subdir)
+        samples, mLOLP_rec, COV_rec = MCS('./input.yaml', results_subdir)
     
     # plot indices for all samples after MCS is complete
     rapt = RAPlotTools(results_subdir)
